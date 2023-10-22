@@ -64,67 +64,28 @@ mt19937 rng(chrono::steady_clock().now().time_since_epoch().count());
 
 int ara[mx], l[mx], r[mx];
 
-void gen(int n)
-{
-    ifr(i, 0, n + 1)
-    {
-        l[i] = -1;
-        r[i] = -1;
-    }
-
-    l[0] = r[n - 1] = 1;
-
-    fr(i, 1, n)
-    {
-        if (ara[i - 1] >= ara[i])
-        {
-            l[i] = 1;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    rfr(i, n - 1, 0)
-    {
-        if (ara[i] <= ara[i + 1])
-        {
-            r[i] = 1;
-        }
-        else
-        {
-            break;
-        }
-    }
-}
-
 bool solve(int n)
 {
-    if (n < 3)
-    {
-        return true;
-    }
+    int curr = mod;
+    r[0] = 0;
 
-    bool f = false;
-
-    fr(i, 0, n) if (l[i] == 1 && r[i] == 1)
+    ifr(i, 1, n)
     {
-        return true;
-    }
+        int prev = curr;
+        int m = r[i - 1];
+        int left = min(curr, ara[i]);
+        int x = ara[i] - left;
 
-    fr(i, 1, n - 1)
-    {
-        if ((l[i] == -1 && r[i] == -1) && (l[i - 1] == 1 && r[i + 1] == 1))
+        r[i] = max(m, x);
+        curr = ara[i] - r[i];
+
+        if (curr < 0 || curr > prev)
         {
-            if (ara[i - 1] + ara[i + 1] >= ara[i])
-            {
-                return true;
-            }
+            return false;
         }
     }
 
-    return false;
+    return true;
 }
 
 int32_t main()
@@ -141,9 +102,14 @@ int32_t main()
         int n;
         cin >> n;
 
-        fr(i, 0, n) cin >> ara[i];
-        gen(n);
-        solve(n) ? yes() : no();
+        ifr(i, 1, n) cin >> ara[i];
+        bool _fr = solve(n);
+        reverse(ara + 1, ara + 1 + n);
+        bool _rev = solve(n);
+
+        (_fr || _rev) ? yes() : no();
     }
     return 0;
 }
+
+// 11
