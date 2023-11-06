@@ -51,12 +51,7 @@ using namespace std;
 #define rfr(i, e, s) for (int i = e - 1; i >= s; i--)
 
 // Functions
-ll gcd(ll a, ll b)
-{
-	if (b == 0)
-		return a;
-	return gcd(b, a % b);
-}
+ll gcd(ll a, ll b) { b ? gcd(b, a % b) : a; }
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
 int Set(int N, int pos) { return N = N | (1 << pos); }
 int reset(int N, int pos) { return N = N & ~(1 << pos); }
