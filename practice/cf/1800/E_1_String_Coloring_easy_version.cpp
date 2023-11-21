@@ -3,7 +3,7 @@
 using namespace std;
 
 // Data type
-#define int long long
+// #define int long long
 #define ll long long
 #define pii pair<int, int>
 #define piii pair<int, pii>
@@ -51,12 +51,7 @@ using namespace std;
 #define rfr(i, e, s) for (int i = e - 1; i >= s; i--)
 
 // Functions
-ll gcd(ll a, ll b)
-{
-	if (b == 0)
-		return a;
-	return gcd(b, a % b);
-}
+ll gcd(ll a, ll b) { b ? gcd(b, a % b) : a; }
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
 int Set(int N, int pos) { return N = N | (1 << pos); }
 int reset(int N, int pos) { return N = N & ~(1 << pos); }
@@ -64,17 +59,89 @@ bool check(int N, int pos) { return (bool)(N & (1 << pos)); }
 void yes() { cout << "YES\n"; }
 void no() { cout << "NO\n"; }
 
+int g[205][205], col[205];
+
+bool solve(int n)
+{
+	fr(i, 0, n)
+	{
+		if (col[i] == -1)
+		{
+			col[i] = 0;
+		}
+		else
+		{
+			continue;
+		}
+
+		queue<int> q;
+		q.push(i);
+
+		while (!q.empty())
+		{
+			int p = q.front();
+			q.pop();
+
+			fr(j, 0, n)
+			{
+				if (p == j)
+				{
+					continue;
+				}
+
+				if (g[p][j])
+				{
+					if (col[j] == col[p])
+					{
+						return false;
+					}
+					else if (col[j] == -1)
+					{
+						col[j] = 1 - col[p];
+						q.push(j);
+					}
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
 int32_t main()
 {
 	// rin();
 	// wrout();
 	fst;
 
-	int t;
-	cin >> t;
+	int n;
+	string s;
+	cin >> n >> s;
+	mem(g, 0);
+	mem(col, -1);
 
-	while (t--)
+	fr(i, 0, n)
 	{
+		fr(j, 0, i)
+		{
+			if (s[j] > s[i])
+			{
+				g[i][j] = g[j][i] = 1;
+			}
+		}
+	}
+
+	bool isPos = solve(n);
+
+	if (isPos)
+	{
+		yes();
+		fr(i, 0, n) cout << col[i] << "";
+		cout << "\n";
+	}
+	else
+	{
+		no();
 	}
 	return 0;
 }
