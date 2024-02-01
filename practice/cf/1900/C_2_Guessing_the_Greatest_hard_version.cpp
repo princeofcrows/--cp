@@ -71,7 +71,7 @@ int32_t main()
 
     if (n == 2)
     {
-        cout << "! " << ((3 ^ x)) << endl;
+        cout << "! " << ((3LL ^ x)) << endl;
         return 0;
     }
 
@@ -92,12 +92,7 @@ int32_t main()
 
         while (l <= h)
         {
-            int m = (l + h + 1) / 2;
-            if (m == x)
-            {
-                h = x - 1;
-                break;
-            }
+            int m = (l + h) / 2;
 
             cout << "? " << m << " " << x << endl;
             cin >> y;
@@ -110,8 +105,6 @@ int32_t main()
             {
                 h = m - 1;
             }
-
-            // cout << m << endl;
         }
 
         cout << "! " << h << endl;
@@ -123,27 +116,22 @@ int32_t main()
 
         while (l <= h)
         {
-            int m = (l + h + 1) / 2;
-            if (m == x)
-            {
-                h = x + 1;
-                break;
-            }
+            int m = (l + h) / 2;
 
             cout << "? " << x << " " << m << endl;
             cin >> y;
 
             if (y == x)
             {
-                l = m + 1;
+                h = m - 1;
             }
             else
             {
-                h = m - 1;
+                l = m + 1;
             }
         }
 
-        cout << "! " << h << endl;
+        cout << "! " << l << endl;
     }
 
     return 0;
