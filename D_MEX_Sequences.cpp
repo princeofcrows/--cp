@@ -59,59 +59,26 @@ bool check(int N, int pos) { return (bool)(N & (1 << pos)); }
 void yes() { cout << "YES\n"; }
 void no() { cout << "NO\n"; }
 
-int a[mx], dp[2][mx], n;
-vi v[mx];
+int a[mx], dp[2][2][mx], last[mx];
 
-int solve(int i, int t)
+void init()
 {
-    if (i >= n)
-    {
-        return 0;
-    }
-
-    if (dp[t][i] != -1)
-    {
-        return dp[t][i];
-    }
-
-    int ret = 1;
-    int id1 = upper_bound(v[a[i]].begin(), v[a[i]].end(), i) - v[a[i]].begin();
-
-    if (id1 < v[a[i]].size())
-    {
-        ret = (ret + solve(v[a[i]][id1], t)) % mod;
-    }
-
-    if (t == 0)
-    {
-        int id2 = upper_bound(v[a[i] + 1].begin(), v[a[i] + 1].end(), i) - v[a[i] + 1].begin();
-
-        if (id2 < v[a[i] + 1].size())
-        {
-            ret = (ret + solve(v[a[i] + 1][id2], 0)) % mod;
-        }
-
-        int id3 = upper_bound(v[a[i] + 2].begin(), v[a[i] + 2].end(), i) - v[a[i] + 2].begin();
-
-        if (id3 < v[a[i] + 2].size())
-        {
-            ret = (ret + solve(v[a[i] + 2][id3], 1)) % mod;
-        }
-    }
-
-    return dp[t][i] = ret;
-}
-
-void init(int n)
-{
-    fr(i, 0, n + 1)
+    fr(i, 0, mx)
     {
         fr(j, 0, 2)
         {
-            dp[j][i] = -1;
+            fr(l, 0, 2)
+            {
+                dp[l][j][i] = 0;
+            }
         }
-        v[i].clear();
+        last[i] = -1;
     }
+}
+
+int sumMod(int a, int b)
+{
+    return (a + b + mod) % mod;
 }
 
 int32_t main()
@@ -125,31 +92,69 @@ int32_t main()
 
     while (t--)
     {
+        init();
+        int n;
         sid(n);
-
-        init(n);
-        fr(i, 0, n)
-        {
-            sid(a[i]);
-            v[a[i]].pb(i);
-        }
 
         int ans = 0;
         fr(i, 0, n)
         {
-            if (a[i] == 0)
+            sid(a[i]);
+
+            int l = a[i] == 0 ? 1 : 0, h = a[i] == 1 ? 1 : 0;
+
+            if (last[a[i]] != -1)
             {
-                ans = (ans + solve(i, 0)) % mod;
-                // break;
+                l = sumMod(l, dp[0][0][last[a[i]]] + dp[1][0][last[a[i]]]);
+                h = sumMod(h, dp[0][1][last[a[i]]] + dp[1][1][last[a[i]]]);
             }
+
+            int x = a[i] - 1;
+
+            if (x >= 0)
+            {
+                if (last[x] != -1)
+                {
+                    l = sumMod(l, dp[0][0][last[x]]);
+                }
+            }
+
+            x = a[i] - 2;
+
+            if (x >= 0)
+            {
+                if (last[x] != -1)
+                {
+                    h = sumMod(h, dp[0][0][last[x]]);
+                }
+            }
+
+            x = a[i] + 2;
+
+            if (x >= 0)
+            {
+                if (last[x] != -1)
+                {
+                    h = sumMod(h, dp[0][1][last[x]]);
+                }
+            }
+
+            dp[0][0][i] = sumMod(dp[0][0][i], l);
+            dp[0][1][i] = sumMod(dp[0][1][i], h);
+
+            dp[1][0][i] = dp[0][0][i];
+            dp[1][1][i] = dp[0][1][i];
+
+            last[a[i]] = i;
+
+            cout << i << " " << l << " " << h << endl;
         }
 
-        fr(i, 0, n)
+        fr(i, 0, n + 1)
         {
-            if (a[i] == 1)
+            if (last[i] != -1)
             {
-                ans = (ans + solve(i, 1)) % mod;
-                // break;
+                ans = (ans + dp[0][0][last[i]] + dp[0][1][last[i]]) % mod;
             }
         }
 
