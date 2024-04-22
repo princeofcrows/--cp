@@ -72,9 +72,9 @@ void init(int n)
     }
 }
 
-int sumMod(int a, int b)
+int sumMod(int x, int y)
 {
-    return ((a + b) % mod + mod) % mod;
+    return ((x + y) % mod + mod) % mod;
 }
 
 int32_t main()
@@ -111,10 +111,10 @@ int32_t main()
 
             x = a[i] + 2;
 
-            if (x <= n)
-            {
-                l = sumMod(l, dp[1][x]);
-            }
+            // if (x <= n)
+            // {
+            //     l = sumMod(l, dp[1][x]);
+            // }
 
             x = a[i] - 2;
 
