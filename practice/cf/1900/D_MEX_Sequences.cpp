@@ -93,49 +93,31 @@ int32_t main()
         init(n);
 
         int ans = 0;
+        dp[0][0] = 1;
+
         fr(i, 0, n)
         {
             sid(a[i]);
 
-            int l = 0, h = 0;
+            dp[0][a[i] + 1] = sumMod(dp[0][a[i] + 1], dp[0][a[i] + 1]);
+            dp[0][a[i] + 1] = sumMod(dp[0][a[i]], dp[0][a[i] + 1]);
 
-            l = sumMod(l, dp[0][a[i]]) + (a[i] == 0 ? 1 : 0);
-            h = sumMod(h, dp[1][a[i]]) + (a[i] == 1 ? 1 : 0);
+            dp[1][a[i] + 1] = sumMod(dp[1][a[i] + 1], dp[1][a[i] + 1]);
 
-            int x = a[i] - 1;
-
-            if (x >= 0)
+            if (a[i] - 1 >= 0)
             {
-                l = sumMod(l, dp[0][x]);
+                dp[1][a[i] - 1] = sumMod(dp[1][a[i] - 1], dp[1][a[i] - 1]);
+                dp[1][a[i] - 1] = sumMod(dp[1][a[i] - 1], dp[0][a[i] - 1]);
             }
-
-            x = a[i] + 2;
-
-            // if (x <= n)
-            // {
-            //     l = sumMod(l, dp[1][x]);
-            // }
-
-            x = a[i] - 2;
-
-            if (x >= 0)
-            {
-                h = sumMod(h, dp[0][x]);
-            }
-
-            dp[0][a[i]] = sumMod(dp[0][a[i]], l);
-            dp[1][a[i]] = sumMod(dp[1][a[i]], h);
-
-            cout << a[i] << "-->>" << l << "-->" << dp[0][a[i]] << "-------"
-                 << h << "-->" << dp[1][a[i]] << endl;
         }
 
         ifr(i, 0, n + 1)
         {
-            ans = (ans + dp[0][i] + dp[1][i]) % mod;
+            // cout << dp[0][i] << " " << dp[1][i] << endl;
+            ans = (ans + sumMod(dp[0][i], dp[1][i])) % mod;
         }
 
-        cout << ans << endl;
+        cout << (ans - 1 + mod) % mod << endl;
     }
     return 0;
 }
