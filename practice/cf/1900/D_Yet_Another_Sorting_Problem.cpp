@@ -59,8 +59,52 @@ bool check(int N, int pos) { return (bool)(N & (1 << pos)); }
 void yes() { cout << "YES\n"; }
 void no() { cout << "NO\n"; }
 
-int a[mx], b[mx];
-si s;
+int a[mx];
+vpi v;
+
+int sizeSet[mx], parent[mx];
+
+void initSet(int n)
+{
+    for (int i = 1; i <= n; i++)
+    {
+        parent[i] = i;
+        sizeSet[i] = 1;
+    }
+}
+
+int findSet(int i)
+{
+    if (parent[i] == i)
+        return i;
+
+    return parent[i] = findSet(parent[i]);
+}
+
+bool isSameset(int i, int j)
+{
+    return (findSet(i) == findSet(j));
+}
+
+void unionSet(int i, int j)
+{
+    int a = findSet(j);
+    int b = findSet(i);
+
+    if (a == b)
+        return;
+
+    if (sizeSet[a] >= sizeSet[b])
+    {
+        sizeSet[a] += sizeSet[b];
+        parent[b] = a;
+    }
+    else
+    {
+        sizeSet[b] += sizeSet[a];
+        parent[a] = b;
+    }
+}
 
 int32_t main()
 {
@@ -79,41 +123,54 @@ int32_t main()
         fr(i, 0, n)
         {
             cin >> a[i];
-            b[i] = a[i];
-            s.insert(a[i]);
+            v.pb({a[i], i});
         }
 
-        sort(b, b + n);
+        initSet(n);
+        sort_all(v);
+        bool isUnq = true;
 
         fr(i, 0, n)
         {
-            if (b[i] != a[i])
+            pii u = v[i];
+            unionSet(i + 1, u.se + 1);
+
+            if (i > 0 && v[i].fi == v[i - 1].fi)
             {
-                cnt++;
+                isUnq = false;
             }
         }
 
-        if (cnt == 0)
+        int tot = 0;
+        si s;
+        ifr(i, 1, n)
+        {
+            int x = findSet(i);
+
+            if (!s.count(x))
+            {
+                int sizeOfSet = sizeSet[x];
+                s.insert(x);
+
+                tot += (sizeOfSet - 1);
+            }
+        }
+
+        // cout << tot << endl;
+
+        if (tot % 2 == 0)
+        {
+            yes();
+        }
+        else if (!isUnq)
         {
             yes();
         }
         else
         {
-            if (n == 2)
-            {
-                no();
-            }
-            else if (n == 3 && s.size() == 3 && cnt == 2)
-            {
-                no();
-            }
-            else
-            {
-                yes();
-            }
+            no();
         }
-
-        s.clear();
+        v.clear();
     }
     return 0;
 }
