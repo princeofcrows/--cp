@@ -41,9 +41,9 @@ using namespace std;
 #define rin() freopen("in.txt", "r", stdin)
 #define wrout() freopen("out.txt", "w", stdout)
 #define fst                       \
-	ios_base::sync_with_stdio(0); \
-	cin.tie(0);                   \
-	cout.tie(0);
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0);                   \
+    cout.tie(0);
 
 // Loops
 #define fr(i, s, e) for (int i = s; i < e; i++)
@@ -61,15 +61,35 @@ void no() { cout << "NO\n"; }
 
 int32_t main()
 {
-	// rin();
-	// wrout();
-	fst;
+    // rin();
+    // wrout();
+    fst;
 
-	int t;
-	cin >> t;
+    int t;
+    cin >> t;
 
-	while (t--)
-	{
-	}
-	return 0;
+    while (t--)
+    {
+        int n, k;
+        cin >> n >> k;
+
+        if (n == 1 && k == 1)
+        {
+            cout << 1 << endl;
+            cout << 1 << endl;
+        }
+        else if (n == 3 && k == 2)
+        {
+            cout << 1 << endl;
+            cout << 1 << endl;
+        }
+        else if (k - 1 != 1 || k + 2 != n)
+        {
+            cout << 3 << endl;
+            cout << 1 << " " << k - 1 << " " << k + 2 << endl;
+        }
+        else
+            cout << -1 << endl;
+    }
+    return 0;
 }
