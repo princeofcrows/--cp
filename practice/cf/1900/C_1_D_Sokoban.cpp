@@ -63,104 +63,64 @@ int a[mx], b[mx];
 
 int solve(int n, int m)
 {
-    int curr = 0, over_lap = 0, ans_p = 0, ans_n = 0;
-    priority_queue<pii, vector<pii>, greater<pii>> q;
+    vi res;
+    for (int co = -1; co <= 1; co += 2)
+    {
+        int curr = 0, over_lap = 0, ans = 0;
+        priority_queue<pii, vector<pii>, greater<pii>> q;
 
-    fr(i, 0, n)
-    {
-        if (a[i] > 0)
+        fr(i, 0, n)
         {
-            q.push({a[i], 0});
-        }
-    }
-    fr(i, 0, m)
-    {
-        if (b[i] > 0)
-        {
-            q.push({b[i], 1});
-            if (binary_search(a, a + n, b[i]))
+            if (a[i] * co > 0)
             {
-                over_lap++;
+                q.push({a[i] * co, 0});
             }
         }
-    }
-
-    vi v;
-    while (!q.empty())
-    {
-        auto p = q.top();
-        q.pop();
-
-        if (p.se == 0)
+        fr(i, 0, m)
         {
-            curr++;
-        }
-        else if (p.se == 1)
-        {
-            v.pb(p.fi);
-
-            if (binary_search(a, a + n, p.fi))
+            if (b[i] * co > 0)
             {
-                over_lap--;
-            }
-
-            int idx = upper_bound(v.begin(), v.end(), p.fi - curr) - v.begin();
-            int current_ans = over_lap + (int)v.size() - idx;
-            ans_p = max(ans_p, current_ans);
-
-            // cout << (int)v.size() - idx << " " << over_lap << " " << p.fi << endl;
-        }
-    }
-
-    curr = 0, over_lap = 0;
-
-    fr(i, 0, n)
-    {
-        if (a[i] < 0)
-        {
-            q.push({-a[i], 0});
-        }
-    }
-    fr(i, 0, m)
-    {
-        if (b[i] < 0)
-        {
-            q.push({-b[i], 1});
-            if (binary_search(a, a + n, b[i]))
-            {
-                over_lap++;
+                q.push({b[i] * co, 1});
+                if (binary_search(a, a + n, b[i]))
+                {
+                    over_lap++;
+                }
             }
         }
-    }
 
-    v.clear();
-    while (!q.empty())
-    {
-        auto p = q.top();
-        q.pop();
-
-        if (p.se == 0)
+        vi v;
+        while (!q.empty())
         {
-            curr++;
-        }
-        else if (p.se == 1)
-        {
-            v.pb(p.fi);
+            auto p = q.top();
+            q.pop();
 
-            if (binary_search(a, a + n, -p.fi))
+            if (p.se == 0)
             {
-                over_lap--;
+                curr++;
             }
+            else if (p.se == 1)
+            {
+                v.pb(p.fi);
 
-            int idx = upper_bound(v.begin(), v.end(), p.fi - curr) - v.begin();
-            int current_ans = over_lap + (int)v.size() - idx;
-            ans_n = max(ans_n, current_ans);
+                if (binary_search(a, a + n, co * p.fi))
+                {
+                    over_lap--;
+                }
 
-            // cout << (int)v.size() - idx << " " << over_lap << " " << p.fi << endl;
+                int idx = upper_bound(v.begin(), v.end(), p.fi - curr) - v.begin();
+                int current_ans = over_lap + (int)v.size() - idx;
+                ans = max(ans, current_ans);
+            }
         }
+
+        res.pb(ans);
     }
 
-    return ans_p + ans_n;
+    int ans = 0;
+    for (auto u : res)
+        ans += u;
+
+    return ans;
 }
 
 void take_input(int n, int m)
