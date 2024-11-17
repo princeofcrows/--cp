@@ -27,7 +27,7 @@ using namespace std;
 #define mem(ara, x) memset(ara, x, sizeof ara)
 
 // Const
-#define mod 1000000007
+#define mod 1000000000
 // 28722900390631
 #define inf 1e18 + 19
 #define mx 200015
@@ -69,7 +69,7 @@ void take_input(int n, int m)
 
 vi solve(int n, int m)
 {
-    int _max = -inf, _sum = 0;
+    int _max = -mod, _sum = 0;
 
     fr(i, 0, n)
     {
@@ -101,9 +101,15 @@ vi solve(int n, int m)
         while (l <= h)
         {
             int mid = (l + h) / 2;
-            unsigned long long _sum_rep = mid * _sum + _max;
+            if (_x - _max < 0)
+            {
+                h = mid - 1;
+                continue;
+            }
 
-            if (_sum_rep >= _x)
+            unsigned long long _sum_rep = mid * _sum;
+
+            if (_sum_rep >= _x - _max)
             {
                 h = mid - 1;
             }
@@ -113,7 +119,8 @@ vi solve(int n, int m)
             }
         }
 
-        q.push({_x - l * _sum, i});
+        int rem = _x - l * _sum;
+        q.push({rem, i});
         v.pb(l * n);
     }
 
