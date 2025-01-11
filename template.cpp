@@ -26,14 +26,7 @@ using namespace std;
 #define rev_all(v) reverse(all(v));
 #define mem(ara, x) memset(ara, x, sizeof ara)
 
-// Const
-#define mod 1000000007
-// 28722900390631
-#define inf 1e18 + 19
-#define mx 200015
-#define pi acos(-1.0)
-#define seed 997
-// 769 919 647 839
+
 
 // Input Output
 #define sild(x) scanf("%lld", &x)
@@ -58,6 +51,15 @@ int reset(int N, int pos) { return N = N & ~(1 << pos); }
 bool check(int N, int pos) { return (bool)(N & (1 << pos)); }
 void yes() { cout << "YES\n"; }
 void no() { cout << "NO\n"; }
+
+// Const
+const int mod = 1000000007;
+// 28722900390631
+const int inf = 1e18 + 19;
+const int MX = 200015;
+const int pi = acos(-1.0);
+const int seed = 997;
+// 769 919 647 839
 
 int32_t main()
 {
