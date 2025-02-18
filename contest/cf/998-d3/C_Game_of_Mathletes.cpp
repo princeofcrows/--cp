@@ -56,22 +56,38 @@ void no() { cout << "NO\n"; }
 const int mod = 1000000007;
 // 28722900390631
 const int inf = 1e18 + 19;
-const int MX = 200015;
+const int MX = 400015;
 const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+int n, x[MX], cnt[MX];
+
 int32_t main()
 {
-	// rin();
-	// wrout();
-	fst;
+    // rin();
+    // wrout();
+    fst;
 
-	int t;
-	cin >> t;
+    int t;
+    cin >> t;
 
-	while (t--)
-	{
-	}
-	return 0;
+    while (t--) {
+        int n, ans = 0, k, bigK = 0;
+        cin >> n >> k;
+
+        ifr(i, 0, max(k, n)) cnt[i] = 0;
+
+        fr(i, 0, n) {
+            cin >> x[i];
+            cnt[x[i]]++;
+        }
+
+        ifr(i, 0, k) {
+            ans += min(cnt[i], cnt[k - i]);
+        }
+
+        cout << ans / 2 << endl;
+    }
+    return 0;
 }

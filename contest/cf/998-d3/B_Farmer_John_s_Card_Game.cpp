@@ -61,17 +61,70 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+vi cards[2005], res;
+int idf[2005];
+
+
+
+bool solve(int n, int m) {
+    bool vis[n];
+    mem(vis, false);
+    vi p;
+    fr(i, 0, n) {
+        p.pb(idf[i]);
+        if (vis[idf[i]]) {
+            return false;
+        }
+
+        vis[idf[i]] = true;
+    }
+
+
+    fr(j, 0, m)
+    {
+        fr(i, 0, n) {
+            if (idf[j * n + i] != p[i]) {
+                return false;
+            }
+        }
+    }
+
+    res = p;
+    return true;
+}
+
 int32_t main()
 {
-	// rin();
-	// wrout();
-	fst;
+    // rin();
+    // wrout();
+    fst;
 
-	int t;
-	cin >> t;
+    int t;
+    cin >> t;
 
-	while (t--)
-	{
-	}
-	return 0;
+    while (t--)
+    {
+        int n, m;
+        cin >> n >> m;
+
+        fr(i, 0, n) {
+            fr(j, 0, m) {
+                int x;
+                cin >> x;
+
+                idf[x] = i;
+            }
+        }
+
+        bool status = solve(n, m);
+        if (!status) {
+            cout << -1 << endl;
+        }
+        else {
+            for (auto u : res) cout << u + 1 << " ";
+            cout << endl;
+        }
+
+    }
+    return 0;
 }

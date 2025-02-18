@@ -61,17 +61,39 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+int a[6];
+
 int32_t main()
 {
-	// rin();
-	// wrout();
-	fst;
+    // rin();
+    // wrout();
+    fst;
 
-	int t;
-	cin >> t;
+    int t;
+    cin >> t;
 
-	while (t--)
-	{
-	}
-	return 0;
+    while (t--)
+    {
+        int ans = 0;
+        fr(i, 0, 5) {
+            if (i == 2) continue;
+            cin >> a[i];
+        }
+
+
+        fr(i, -201, 201) {
+            a[2] = i;
+            int c = 0;
+            fr(j, 2, 5) {
+                if (a[j] == a[j - 1] + a[j - 2]) {
+                    c++;
+                }
+            }
+
+            ans = max(ans, c);
+        }
+
+        cout << ans << endl;
+    }
+    return 0;
 }

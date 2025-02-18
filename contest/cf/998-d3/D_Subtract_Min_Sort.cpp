@@ -61,17 +61,41 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+int a[MX];
+
+bool solve(int n) {
+    ifr(i, 2, n) {
+        if (a[i] < a[i - 1]) {
+            return false;
+        }
+
+        a[i] -= a[i - 1];
+    }
+
+    return true;
+}
+
 int32_t main()
 {
-	// rin();
-	// wrout();
-	fst;
+    // rin();
+    // wrout();
+    fst;
 
-	int t;
-	cin >> t;
+    int t;
+    cin >> t;
 
-	while (t--)
-	{
-	}
-	return 0;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        a[0] = a[n + 1] = 0;
+        ifr(i, 1, n) {
+            cin >> a[i];
+        }
+
+        (solve(n) ? yes() : no());
+
+    }
+    return 0;
 }
