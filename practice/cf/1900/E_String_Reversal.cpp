@@ -61,6 +61,29 @@ const int seed = 997;
 
 vi g[2][26];
 
+int tree[MX + 5];
+int ara[MX];
+
+int read(int idx)
+{
+    int sum = 0;
+    while (idx > 0)
+    {
+        sum += tree[idx];
+        idx -= (idx & -idx);
+    }
+    return sum;
+}
+
+void update(int idx, int val)
+{
+    while (idx <= MX)
+    {
+        tree[idx] += val;
+        idx += (idx & -idx);
+    }
+}
+
 int32_t main()
 {
     // rin();
@@ -80,25 +103,32 @@ int32_t main()
         g[1][(int)(t[i] - 'a')].push_back(i);
     }
 
-    int ans = 0, thresh = n / 2, already[2] = {0, 0};
+    int ans = 0;
 
     for (int i = 0; i < 26; i++)
     {
-        assert(g[0][i].size() == g[1][i].size());
         for (int j = 0; j < g[0][i].size(); j++)
         {
-            if (g[0][i][j] < g[1][i][j] && g[1][i][j] >= thresh)
-            {
-                already[0]++;
-            }
-            else if (g[0][i][j] > g[1][i][j] && g[1][i][j] <= thresh)
-            {
-                already[1]++;
-            }
-            ans += llabs(g[0][i][j] - g[1][i][j]);
+            int id = g[0][i][j];
+            int val = g[1][i][j];
+            ara[id + 1] = val + 1;
         }
     }
-    int co = max(already[0], already[1]);
-    cout << ans - (co + 1) * co / 2 << endl;
+
+    ifr(i, 1, n)
+    {
+        update(i, 1);
+    }
+
+    ifr(i, 1, n)
+    {
+        int val = ara[i];
+
+        ans += read(val - 1);
+        update(val, -1);
+    }
+
+    cout << ans << endl;
+
     return 0;
 }
