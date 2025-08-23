@@ -44,9 +44,9 @@ using namespace std;
 // Functions
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
-int Set(int N, int pos) { return N = N | (1 << pos); }
-int reset(int N, int pos) { return N = N & ~(1 << pos); }
-bool check(int N, int pos) { return (bool)(N & (1 << pos)); }
+int Set(int N, int pos) { return N = N | (1LL << pos); }
+int reset(int N, int pos) { return N = N & ~(1LL << pos); }
+bool check(int N, int pos) { return (bool)(N & (1LL << pos)); }
 void yes() { cout << "YES\n"; }
 void no() { cout << "NO\n"; }
 
@@ -59,19 +59,6 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
-void test()
-{
-    for (int x = 11; x <= 17; x++)
-    {
-        cout << x << ": -----\n";
-        for (int i = 0; i <= 30; i++)
-        {
-            cout << (x ^ i) << " ";
-        }
-        cout << endl;
-    }
-}
-
 int32_t main()
 {
     // rin();
@@ -80,18 +67,34 @@ int32_t main()
 
     int t;
     cin >> t;
-    test();
 
     while (t--)
     {
         int n, m;
         cin >> n >> m;
+        int ans = 0;
 
-        if (m < n)
+        m++;
+        rfr(i, 32, 0)
         {
-            cout << 0 << endl;
-            continue;
+            int xr = ans ^ n;
+
+            if (xr >= m)
+            {
+                break;
+            }
+
+            if (check(n, i) == check(m, i))
+            {
+                continue;
+            }
+            else if (check(m, i))
+            {
+                ans = Set(ans, i);
+            }
         }
+
+        cout << ans << endl;
     }
     return 0;
 }
