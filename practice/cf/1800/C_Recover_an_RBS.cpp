@@ -26,17 +26,15 @@ using namespace std;
 #define rev_all(v) reverse(all(v));
 #define mem(ara, x) memset(ara, x, sizeof ara)
 
-
-
 // Input Output
 #define sild(x) scanf("%lld", &x)
 #define sid(x) scanf("%d", &x)
 #define rin() freopen("in.txt", "r", stdin)
 #define wrout() freopen("out.txt", "w", stdout)
 #define fst                       \
-	ios_base::sync_with_stdio(0); \
-	cin.tie(0);                   \
-	cout.tie(0);
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0);                   \
+    cout.tie(0);
 
 // Loops
 #define fr(i, s, e) for (int i = s; i < e; i++)
@@ -61,45 +59,120 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
-bool chk(string s) {
-    if (s.length() % 2) {
+string construct(string s)
+{
+    if (s.length() % 2)
+    {
+        return "";
+    }
+
+    string z = s;
+    int o = 0, c = 0;
+
+    for (auto ch : s)
+    {
+        if (ch == '(')
+        {
+            o++;
+        }
+        else if (ch == ')')
+        {
+            c++;
+        }
+    }
+
+    int n = z.length();
+    fr(i, 0, n)
+    {
+        if (z[i] == '?')
+        {
+            if (o < n / 2)
+            {
+                z[i] = '(';
+                o++;
+            }
+            else
+            {
+                z[i] = ')';
+                c++;
+            }
+        }
+    }
+
+    if (o != n / 2 || c != n / 2)
+    {
+        return "";
+    }
+
+    return z;
+}
+
+bool isValid(string s)
+{
+    int cnt = 0;
+
+    for (auto ch : s)
+    {
+        if (ch == '(')
+        {
+            cnt++;
+        }
+        else if (ch == ')')
+        {
+            cnt--;
+        }
+
+        if (cnt < 0)
+        {
+            return false;
+        }
+    }
+
+    return cnt == 0;
+}
+
+bool chk(string s)
+{
+    auto z = construct(s);
+    if (z == "")
+    {
+        return false;
+    }
+    bool isCurVal = isValid(z);
+    if (!isCurVal)
+    {
         return false;
     }
 
-    int cur = 0, ques = 0;
-    bool isPos = true;
+    int firClose = -1, lastOpen = -1;
+    int n = z.length();
 
-    fr(i, 0, s.length()) {
-        if (s[i] == '(') {
-            cur++;
-        }
-        else if (s[i] == ')') {
-            cur--;
-        }
-        else {
-            ques++;
-        }
-
-        if (cur == -1) {
-            if (ques == 0) {
-                isPos = false;
-                break;
-            }
-            else {
-                if (ques != 1) {
-                    isPos = false;
-                    break;
-                }
-                ques--;
-                cur++;
-            }
+    rfr(i, n, 0)
+    {
+        if (z[i] == '(' && s[i] == '?')
+        {
+            lastOpen = i;
+            break;
         }
     }
 
-    cout << cur << " " << ques << endl;
-    if (cur != ques && !(cur == 0 && ques == 2)) { isPos = false; }
+    fr(i, 0, n)
+    {
+        if (z[i] == ')' && s[i] == '?')
+        {
+            firClose = i;
+            break;
+        }
+    }
 
-    return isPos;
+    if (firClose == -1 || lastOpen == -1)
+    {
+        return true;
+    }
+
+    swap(z[firClose], z[lastOpen]);
+    auto isSwapValid = isValid(z);
+    return !isSwapValid;
 }
 
 int32_t main()
@@ -116,11 +189,7 @@ int32_t main()
         string s;
         cin >> s;
 
-        bool isPos = chk(s);
-        rev_all(s);
-        isPos |= chk(s);
-
-        (isPos ? yes() : no());
+        (chk(s) ? yes() : no());
     }
     return 0;
 }
