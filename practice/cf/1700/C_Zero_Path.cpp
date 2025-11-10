@@ -59,6 +59,8 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+int a[1001][1001], dp[2][1001][1001];
+
 int32_t main()
 {
     // rin();
@@ -70,6 +72,59 @@ int32_t main()
 
     while (t--)
     {
+        int n, m;
+        cin >> n >> m;
+
+        ifr(i, 1, n)
+        {
+            ifr(j, 1, m)
+            {
+                cin >> a[i][j];
+            }
+        }
+
+        if ((n + m) % 2 == 0)
+        {
+            no();
+            continue;
+        }
+
+        ifr(i, 0, n)
+        {
+            dp[0][i][0] = inf;
+            dp[1][i][0] = -inf;
+        }
+        ifr(i, 0, m)
+        {
+            dp[0][0][i] = inf;
+            dp[1][0][i] = -inf;
+        }
+
+        ifr(i, 1, n)
+        {
+            ifr(j, 1, m)
+            {
+                if (i == 1 && j == 1)
+                {
+                    dp[0][i][j] = dp[1][i][j] = a[i][j];
+                    continue;
+                }
+
+                dp[0][i][j] = min(dp[0][i - 1][j], dp[0][i][j - 1]) + a[i][j];
+                dp[1][i][j] = max(dp[1][i - 1][j], dp[1][i][j - 1]) + a[i][j];
+            }
+        }
+
+        // cout << dp[0][n][m] << " " << dp[1][n][m];
+
+        if (dp[0][n][m] <= 0 && dp[1][n][m] >= 0)
+        {
+            yes();
+        }
+        else
+        {
+            no();
+        }
     }
     return 0;
 }
