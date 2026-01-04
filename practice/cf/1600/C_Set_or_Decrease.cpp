@@ -59,6 +59,8 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
+int a[MX];
+
 int32_t main()
 {
     // rin();
@@ -70,36 +72,41 @@ int32_t main()
 
     while (t--)
     {
-        int n;
-        string str;
-        cin >> n >> str;
+        int n, k;
+        cin >> n >> k;
 
-        map<int, int> mp;
-        int tot = 0, ans = 0;
-        for (int i = 0; i < str.length(); i++)
+        int sum = 0;
+        fr(i, 0, n)
         {
-            int u = (int)(str[i] - '0');
-            tot += u;
+            cin >> a[i];
+            sum += a[i];
+        }
+        if (sum <= k)
+        {
+            cout << 0 << endl;
+            continue;
+        }
+        sort(a, a + n);
 
-            mp[(i + 1 - tot)]++;
+        int cnt = sum - k, changed = 0;
+        rfr(i, n, 1)
+        {
+            sum -= a[i];
+            sum += a[0];
+            changed++;
+
+            if (sum <= k)
+            {
+                cnt = min(cnt, changed);
+            }
+            else
+            {
+                int need = sum - k;
+                cnt = min(cnt, changed + (need + changed) / (changed + 1));
+            }
         }
 
-        tot = 0;
-        int id = 0;
-        for (int i = 0; i < str.length(); i++)
-        {
-            ans += mp[id];
-
-            id++;
-            int u = (int)(str[i] - '0');
-            ;
-            tot += u;
-            id -= u;
-
-            mp[(i + 1 - tot)]--;
-        }
-
-        cout << ans << endl;
+        cout << cnt << endl;
     }
     return 0;
 }
