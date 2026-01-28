@@ -53,7 +53,7 @@ void no() { cout << "NO\n"; }
 // Const
 const int mod = 1000000007;
 // 28722900390631
-const int inf = 1e18 + 19;
+const int inf = (1e18 + 19);
 const int MX = 200015;
 const int pi = acos(-1.0);
 const int seed = 997;
@@ -88,7 +88,7 @@ int32_t main()
             continue;
         }
 
-        int ans = inf;
+        int ans = -1;
         fr(i, 0, n)
         {
             int dis = x;
@@ -101,12 +101,11 @@ int32_t main()
 
             int rollbacks = (dis + costOfOne - 1) / costOfOne;
 
-            ans = min(rollbacks, ans);
-        }
+            if (ans == -1) {
+                ans = rollbacks;
+            }
 
-        if (ans == inf)
-        {
-            ans = -1;
+            ans = min(rollbacks, ans);
         }
 
         cout << ans << endl;
