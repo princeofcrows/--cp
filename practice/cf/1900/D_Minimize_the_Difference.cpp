@@ -76,45 +76,23 @@ int32_t main()
         cin >> n;
         fr(i, 0, n) cin >> a[i];
 
-        if (n <= 3)
+        int sum = 0, _min = inf, _max = 0;
+
+        fr(i, 0, n)
         {
-            cout << llabs(a[0] - a[n - 1]) << endl;
-            continue;
+            sum += a[i];
+            _min = min(sum / (i + 1), _min);
         }
 
-        int mid_sum = 0;
-        fr(i, 1, n - 1)
+        sum = 0;
+
+        rfr(i, n, 0)
         {
-            mid_sum += a[i];
+            sum += a[i];
+            _max = max((sum + n - i - 1) / (n - i), _max);
         }
 
-        int av = mid_sum / (n - 2);
-        int _av = (mid_sum + n - 3) / (n - 2);
-
-        if (a[0] <= av && a[n - 1] >= _av)
-        {
-            cout << a[n - 1] - a[0] << endl;
-        }
-        else if (a[0] <= av)
-        {
-            mid_sum += a[n - 1];
-            int _max = (mid_sum + n - 2) / (n - 1);
-            cout << _max - a[0] << endl;
-        }
-        else if (a[n - 1] >= _av)
-        {
-            mid_sum += a[0];
-            int _min = (mid_sum) / (n - 1);
-            cout << llabs(_min - a[n - 1]) << endl;
-        }
-        else
-        {
-            mid_sum += a[0];
-            mid_sum += a[n - 1];
-            int _max = (mid_sum + n - 1) / (n);
-            int _min = (mid_sum) / (n);
-            cout << llabs(_min - _max) << endl;
-        }
+        cout << _max - _min << endl;
     }
 
     return 0;
