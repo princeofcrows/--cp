@@ -97,18 +97,25 @@ void calcRes(int u, int p = -1)
     {
         if (v != p)
         {
+            dp[u] -= dp[v];
+            dp[u] -= sub[v];
+
             sub[u] -= sub[v];
             sub[v] += sub[u];
-            dp[u] -= dp[v];
-            dp[u] -= sub[u];
+
             dp[v] += dp[u];
+            dp[v] += sub[u];
 
             calcRes(v, u);
 
+            dp[v] -= sub[u];
             dp[v] -= dp[u];
-            dp[u] += dp[v];
+
             sub[v] -= sub[u];
             sub[u] += sub[v];
+
+            dp[u] += sub[v];
+            dp[u] += dp[v];
         }
     }
 }
