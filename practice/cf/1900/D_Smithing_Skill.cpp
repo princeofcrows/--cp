@@ -3,7 +3,7 @@
 using namespace std;
 
 // Data type
-// #define int long long
+#define int long long
 #define ll long long
 #define pii pair<int, int>
 #define piii pair<int, pii>
@@ -27,7 +27,7 @@ using namespace std;
 #define mem(ara, x) memset(ara, x, sizeof ara)
 
 // Input Output
-#define sild(x) scanf("%d", &x)
+#define sild(x) scanf("%lld", &x)
 #define sid(x) scanf("%d", &x)
 #define rin() freopen("in.txt", "r", stdin)
 #define wrout() freopen("out.txt", "w", stdout)
@@ -61,7 +61,7 @@ const int seed = 997;
 
 vpi v;
 int a[MX], b[MX], c[MX];
-priority_queue<int> q;
+int best[MX], ans[MX];
 
 int32_t main()
 {
@@ -77,31 +77,38 @@ int32_t main()
     fr(i, 0, n) sild(b[i]);
     fr(i, 0, m) sild(c[i]);
 
+    fr(i, 0, MX) best[i] = inf;
     fr(i, 0, n)
     {
-        v.pb({a[i] - b[i], a[i]});
+        best[a[i]] = min(a[i] - b[i], best[a[i]]);
     }
 
-    sort_all(v);
-
-    fr(i, 0, m) q.push(c[i]);
-
-    ll exp = 0;
-    for (auto u : v)
+    fr(i, 1, MX)
     {
-        while (!q.empty() && q.top() >= u.se)
+        best[i] = min(best[i - 1], best[i]);
+    }
+
+    fr(i, 1, MX)
+    {
+        if (i - best[i] >= 0)
         {
-            int _c = q.top();
-            q.pop();
-
-            int cy = ((_c - u.se + u.fi) / u.fi);
-            exp += 2 * cy;
-            _c -= cy * u.fi;
-
-            q.push(_c);
+            ans[i] = 2 + ans[i - best[i]];
         }
     }
 
+    int exp = 0;
+
+    fr(i, 0, m)
+    {
+        if (c[i] >= MX)
+        {
+            int cy = ((c[i] - MX + best[MX - 1]) / best[MX - 1]);
+            exp += 2 * cy;
+            c[i] -= cy * best[MX - 1];
+        }
+
+        exp += ans[c[i]];
+    }
     printf("%lld", exp);
     return 0;
 }
