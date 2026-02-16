@@ -59,7 +59,7 @@ const int pi = acos(-1.0);
 const int seed = 997;
 // 769 919 647 839
 
-int a[3003], b[3003], c[3003];
+int a[3003], b[3003], c[3003], id[3003], dp[2][3003];
 
 bool dontInter(int i, int j)
 {
@@ -73,8 +73,24 @@ bool dontInter(int i, int j)
     return x < 0;
 }
 
-bool doesInter[3003][3003];
-vi g[MX];
+bool comp(int a, int b)
+{
+    return c[a] < c[b];
+}
+
+void solve(int n, int idx)
+{
+    fr(i, 0, n)
+    {
+        fr(j, i + 1, n)
+        {
+            if (dontInter(id[i], id[j]))
+            {
+                dp[idx][id[j]] = max(dp[idx][id[j]], dp[idx][id[i]] + 1);
+            }
+        }
+    }
+}
 
 int32_t
 main()
@@ -93,54 +109,18 @@ main()
         fr(i, 0, n)
         {
             cin >> a[i] >> b[i] >> c[i];
+            id[i] = i;
+
+            dp[0][i] = dp[1][i] = 0;
         }
 
-        // fr(i, 0, n)
-        // {
-        //     fr(j, 0, n)
-        //     {
-        //         doesInter[i][j] = false;
-        //     }
-        // }
+        sort(id, id + n, comp);
 
-        fr(i, 0, n)
-        {
-            fr(j, 0, n)
-            {
-                if (dontInter(i, j))
-                {
-                    // doesInter[i][j] = true;
-                    // doesInter[j][i] = true;
-                    // g[j].pb(i);
-                    g[i].pb(j);
+        solve(n, 0);
+        reverse(id, id + n);
+        solve(n, 1);
 
-                    // cout << i + 1 << " " << j + 1 << endl;
-                }
-            }
-        }
-
-        fr(i, 0, n)
-        {
-            int ans = 1;
-            mii mp;
-            si s;
-            for (auto u : g[i])
-            {
-                mp[g[u].size()]++;
-                s.insert(g[u].size());
-            }
-
-            int tot = 0;
-            for (auto u : s)
-            {
-                if (mp[u] + tot >= u)
-                {
-                    ans = u;
-                }
-                tot += mp[u];
-            }
-            cout << ans << " ";
-        }
+        fr(i, 0, n) cout << dp[0][i] + 1 + dp[1][i] << " ";
         cout << endl;
     }
     return 0;
