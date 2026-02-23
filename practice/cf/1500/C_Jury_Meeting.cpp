@@ -88,11 +88,11 @@ long long binPowRec(long long a, long long b)
         return 1;
 
     long long res = binPowRec(a, b / 2);
-    int c = (res * res) % mod;
+    long long c = (res * res) % mod;
 
     if (b % 2)
     {
-        return (c * a) % mod;
+        c = (c * a) % mod;
     }
     return c;
 }
@@ -131,17 +131,20 @@ int32_t main()
             continue;
         }
 
-        int ans = 0, lastCnt = mp[a[n - 2]];
-        fr(i, 0, n)
+        int ans = fact(n), lastCnt = mp[a[n - 2]];
+        fr(i, lastCnt, n)
         {
-            int right = (lastCnt * (n - i - 1)) % mod;
-            int rest = fact(n - 2);
+            int m = i;
+            int right = fact(m);
+            int x = fact(m - lastCnt);
+            right = (right * binPowRec(x, mod - 2)) % mod;
 
-            // cout << i << " " << right * rest << " " << rest << endl;
+            int rest = fact(n - 1 - lastCnt);
 
-            int now = right * rest;
-            now = (now * binPowRec(fact(lastCnt - 1), mod - 2)) % mod;
-            ans = (ans + now) % mod;
+            //cout << i << " " << right << " " << rest << endl;
+
+            int now = (right * rest) % mod;
+            ans = (ans - now + mod) % mod;
         }
 
         cout << ans << endl;
