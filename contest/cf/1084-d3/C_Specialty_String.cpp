@@ -76,24 +76,24 @@ main()
     {
         cin >> n >> s;
 
-        ifr(i, 0, n) ifr(j, 0, n) dp[i][j] = 0;
-
-        fr(i, 1, n)
+        string z;
+        fr(i, 0, s.size())
         {
-            fr(j, 0, n - i)
+            if (z.empty())
             {
-                if (i == 1)
-                {
-                    dp[j][j + i] = (s[j] == s[j + i]);
-                }
-                else
-                {
-                    dp[j][j + i] = (s[j] == s[j + i]) && dp[j - 1][j + i - 1];
-                }
+                z += s[i];
+            }
+            else if (z.back() == s[i])
+            {
+                z.pop_back();
+            }
+            else
+            {
+                z += s[i];
             }
         }
 
-        if (dp[0][n - 1])
+        if (z.empty())
             yes();
         else
             no();
