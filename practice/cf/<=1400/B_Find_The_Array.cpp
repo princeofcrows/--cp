@@ -76,15 +76,12 @@ int32_t main()
     {
         int n; cin >> n; fr(i, 0, n) cin >> a[i];
         int s[] = { 0, 0 }, tot = 0;
-        fr(i, 0, n) s[i % 2] += a[i] - 1;
+        fr(i, 0, n) s[i % 2] += (a[i]);
         fr(i, 0, n) tot += a[i];
 
-        fr(j, 0, 2) {
-            if (2 * s[j] > tot) continue;
-            fr(i, 0, n) if (i % 2 == j) a[i] = 1;
-        }
-
-        fr(i, 0, n) cout << a[i] << " ";
+        int p = 0;
+        if (s[1] > s[0]) p = 1;
+        fr(i, 0, n) cout << ((i % 2 == p) ? a[i] : 1) << " ";
         cout << endl;
     }
     return 0;
