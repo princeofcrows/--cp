@@ -76,7 +76,7 @@ int32_t main()
     {
         int n; cin >> n; fr(i, 0, n) cin >> a[i];
         int s[] = { 0, 0 }, tot = 0;
-        fr(i, 0, n) s[i % 2] += a[i];
+        fr(i, 0, n) s[i % 2] += a[i] - 1;
         fr(i, 0, n) tot += a[i];
 
         fr(j, 0, 2) {
